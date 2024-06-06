@@ -1,5 +1,9 @@
 # Research for novel distance calculation
 
+# Random Ideas
+
+- Consider using the direction that the eyes are looking at to determine distance based off simple trig
+
 # Research Papers
 
 ## Vision-Based Distance Estimation for Multiple Vehicles Using Single Optical Camera
@@ -13,3 +17,19 @@ Summary:
 
 Takeaways:
 - Could potentially use facial features as a reference and then calculate distance based on pixel size
+
+
+## Face distance estimation from a monocular camera
+
+DOI: 10.1109/ICIP.2013.6738729
+
+Summary: 
+
+- Uses a neural network to determine distance from the face
+- Takes a reference scan of each user to determine facial parameters
+- Uses facial parameter data as inputs to a neural network and outputs distance
+
+Takeaways:
+
+- Kind of combines takeaways from previous by using reference points and standard values but generalises further
+- Could have a strong performance here
