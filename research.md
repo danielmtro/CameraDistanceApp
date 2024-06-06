@@ -27,7 +27,11 @@ Summary:
 
 - Uses a neural network to determine distance from the face
 - Takes a reference scan of each user to determine facial parameters
-- Uses facial parameter data as inputs to a neural network and outputs distance
+- Uses facial parameter data as inputs to a neural network and outputs distance.
+- Facial parameters pictured below:
+
+![image](https://github.com/danielmtro/CameraDistanceApp/assets/102640424/e879969d-16e8-4e31-8548-e12a74223f38)
+
 
 Takeaways:
 
