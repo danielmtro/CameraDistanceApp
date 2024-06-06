@@ -6,7 +6,7 @@
 
 # Research Papers
 
-## Vision-Based Distance Estimation for Multiple Vehicles Using Single Optical Camera
+## 1. Vision-Based Distance Estimation for Multiple Vehicles Using Single Optical Camera
 
 DOI: 10.1109/IBICA.2011.7
 
@@ -19,7 +19,7 @@ Takeaways:
 - Could potentially use facial features as a reference and then calculate distance based on pixel size
 
 
-## Face distance estimation from a monocular camera
+## 2. Face distance estimation from a monocular camera
 
 DOI: 10.1109/ICIP.2013.6738729
 
