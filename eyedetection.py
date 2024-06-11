@@ -12,7 +12,7 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades +
 
 def detect_features(frame, width: int, height: int):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    faces = face_cascade.detectMultiScale(gray, 2, 5)
     num_faces = len(faces)
 
     org = (int(0.75 * width), int(0.8*height))
@@ -25,7 +25,7 @@ def detect_features(frame, width: int, height: int):
         grayface = gray[y:y+h, x:x+w]
     
         eyes = eye_cascade.detectMultiScale(grayface, 
-                    2.5, minNeighbors=15)
+                    1.5, minNeighbors=4)
         
         num_eyes = len(eyes)
         # gray = cv2.putText(gray, f'Eyes: {num_eyes}', org, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2, cv2.LINE_AA)
@@ -34,8 +34,10 @@ def detect_features(frame, width: int, height: int):
         for (xp, yp, wp, hp) in eyes:
             grayface = cv2.rectangle(grayface, (xp, yp), (xp+wp, yp+hp),
                     color=(255, 0, 0), thickness=3)
-            
     
+        gray = cv2.rectangle(gray, (x, y), (x+w, y+h),
+                        color=(255, 0, 0), thickness=1)
+        
     return gray
 
 
