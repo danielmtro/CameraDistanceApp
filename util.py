@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from typing import List
 
 def add_text_to_image(
     image_rgb: np.ndarray,
@@ -87,3 +88,19 @@ def add_text_to_image(
         top_left_xy = (x, y + int(line_height * line_spacing))
 
     return image_rgb
+
+
+def calcdistance(coord: List[tuple]):
+    """Takes in two 2D coordinates and returns the euclidean distance in pixels between them"""
+
+    if len(coord) != 2:
+        raise ValueError(f"More than two coordinates provided {coord}")
+    
+    for co in coord:
+        if len(co) != 2:
+            raise ValueError(f"Coordinate length is not 2D {co}")
+
+    c1 = coord[0]
+    c2 = coord[1]
+    return ((c2[0] - c1[0])**2 + (c2[1] - c1[1])**2)**(1/2)
+        
