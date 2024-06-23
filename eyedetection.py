@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from util import add_text_to_image, calcdistance
+import math
 
 
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades +
@@ -23,16 +24,19 @@ def detect_features(frame,
     num_faces = len(faces)
 
     # add the number of faces and number of eyes to the output screen
-    org = (int(0.75 * width), int(0.8*height))
+    org = (int(0.5 * width), int(0.6*height))
     gray = add_text_to_image(gray, f'Faces: {num_faces}', (org[0], org[1] - 32))
     if not num_faces:
         gray = add_text_to_image(gray, f'Eyes: 0', (org[0], org[1]))
 
     if to_display:
+        depth = calcDepth(to_display)
         gray = add_text_to_image(gray,
-                                 f'Last Eye Distance\n(Pixels): {to_display:.2f}',
+                                 f'Last Eye Distance\n(Pixels): {to_display:.2f} = {depth:.2f} mm',
                                  (org[0], org[1] + 32),
                                  font_scale=0.5)
+
+        
     
     if len(faces) > 1:  # delete later once generalised for multiple faces
         return gray, None
@@ -44,7 +48,7 @@ def detect_features(frame,
 
     # loop through all the possible faces for completenes -- however at the moment only consider one face
 
-    if len(faces = 0): # if we find no faces then we should search the whole frame for whether there are eyes present or not
+    if len(faces) == 0: # if we find no faces then we should search the whole frame for whether there are eyes present or not
         faces = [(0, 0, width, height)]
 
     for (x,y,w,h) in faces:
@@ -85,9 +89,30 @@ def detect_features(frame,
     return gray, distance
 
 
+def correctIVCam(image, rot=90):
+    # given a landscape frame convert it to portrait
+    height, width = image.shape[:2]
+    centerX, centerY = (width // 2, height // 2)
+
+    M = cv2.getRotationMatrix2D((centerX, centerY), rot, 1.0)
+    rotated = cv2.warpAffine(image, M, (width, height))
+    return rotated
+
+
+def calcDepth(pwidth,
+              foc = 32,
+              alpha = 50):
+    
+    a2 = math.radians(50)/2
+    h2 = pwidth/2
+    D = foc * (h2 * math.tan(a2))/(h2/(2*math.tan(a2)) - foc)
+    return D
+
+
 def main():
 
-    stream = cv2.VideoCapture(0)
+    source = 1
+    stream = cv2.VideoCapture(source)
 
     if not stream.isOpened():
         print("No stream :(")
@@ -106,10 +131,15 @@ def main():
     prev_distance = distance
     while(True):
         ret, frame = stream.read()
+
+        # rotate if using ivcam
+        if source == 0:
+            frame = correctIVCam(frame)
+
+        width, height, dim = frame.shape
         if not ret:
             print("No more stream :(")
             break
-
 
         # detect the features
         frame, distance = detect_features(frame, width, height, prev_distance)
